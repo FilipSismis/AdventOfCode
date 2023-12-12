@@ -8,7 +8,7 @@ namespace AdventOfCode
         public int SumAllCalibrationValues()
         {
             var sumOfAll = 0;
-            var lines = File.ReadLines("d1input.txt");
+            var lines = File.ReadLines("d1in.txt");
             foreach (var line in lines)
             {
                 var numbers = line.Where(char.IsDigit).ToList();
@@ -34,7 +34,7 @@ namespace AdventOfCode
         public int SumAllCalibrationValuesPartTwo()
         {
             var sumOfAll = 0;
-            var lines = File.ReadLines("d1input.txt");
+            var lines = File.ReadLines("d1in.txt");
             int lineNr = 1;
             foreach (var line in lines)
             {

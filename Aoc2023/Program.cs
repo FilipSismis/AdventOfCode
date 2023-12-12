@@ -14,8 +14,10 @@ public class Program
 
         var day2 = new Day2();
 
-        var day2Part1Result = day2.SumOfPossibleGameIds();
-        Console.WriteLine($"Day 2 - sum of all possible game ids is:{day2Part1Result}");
+        //var day2Part1Result = day2.SumOfPossibleGameIds();
+        //Console.WriteLine($"Day 2 - sum of all possible game ids is:{day2Part1Result}");
 
+        var day2Part2Result = day2.SumOfPowerForAllTheGameSets();
+        Console.WriteLine($"Day 2 - sum of power of sets from all games is:{day2Part2Result}");
     }
 }
