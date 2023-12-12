@@ -35,7 +35,7 @@ namespace AdventOfCode
         {
             var sumOfAll = 0;
             var lines = File.ReadLines("input.txt");
-
+            int lineNr = 1;
             foreach (var line in lines)
             {
                 var firstNumber = FindFirstNumber(line);
@@ -49,7 +49,10 @@ namespace AdventOfCode
                 if (!int.TryParse(lastNumber, out lastDigit))
                     ParseNumberWords(lastNumber, out lastDigit);
 
-                sumOfAll += (firstDigit * 10) + lastDigit;
+                var number = (firstDigit * 10) + lastDigit;
+                sumOfAll += number;
+                Console.WriteLine($"Line:{lineNr} | Input:{line} | First digit:{firstDigit} | Last digit:{lastDigit} | Number:{number} | Total sum:{sumOfAll}");
+                lineNr ++;
             }
 
             return sumOfAll;
@@ -57,24 +60,23 @@ namespace AdventOfCode
 
         private string FindFirstNumber(string input)
         {
-            StringBuilder sb = new();
-            foreach (char c in input)
+            for (int i = 0; i <= input.Length; i++)
             {
+                char c = input[i];
                 if (char.IsDigit(c))
                     return c.ToString();
                 else
                 {
-                    sb.Append(c);
-                    var possibleNumbers = stringNumbers.Where(i => i.StartsWith(sb.ToString())).ToList();
-                    if (!possibleNumbers.Any())
+                    var possibleNumbers = stringNumbers.Where(i => i.StartsWith(c)).ToList();
+                    if (possibleNumbers.Any())
                     {
-                        sb.Clear();
-                        if(stringNumbers.Any(i => i.StartsWith(c)))
-                            sb.Append(c);
-                    }
-                    else if (possibleNumbers.Count() == 1 && sb.Length == possibleNumbers.First().Length)
-                    {
-                        return possibleNumbers.First();
+                        int startIndex = i;
+                        foreach (var number in possibleNumbers)
+                        {
+                            if ((startIndex + number.Length) <= input.Length)
+                                if(input.Substring(startIndex, number.Length).Equals(number))
+                                    return number;
+                        }
                     }
                 }
             }
@@ -83,25 +85,25 @@ namespace AdventOfCode
 
         private string FindLastNumber(string input)
         {
-            var reverseArray = input.Reverse();
-            StringBuilder sb = new();
-            foreach (var c in reverseArray)
+            var reverseList = input.Reverse().ToArray();
+            for (int i = 0; i < reverseList.Count(); i++)
             {
+                char c = reverseList[i];
                 if (char.IsDigit(c))
                     return c.ToString();
                 else
                 {
-                    sb.Insert(0, c);
-                    var possibleNumbers = stringNumbers.Where(i => i.EndsWith(sb.ToString())).ToList();
-                    if (!possibleNumbers.Any())
+                    var possibleNumbers = stringNumbers.Where(i => i.EndsWith(c)).ToList();
+                    if (possibleNumbers.Any())
                     {
-                        sb.Clear();
-                        if (stringNumbers.Any(i => i.EndsWith(c)))
-                            sb.Insert(0, c);
-                    }
-                    else if (possibleNumbers.Count() == 1 && sb.Length == possibleNumbers.First().Length)
-                    {
-                        return possibleNumbers.First();
+                        var endIndex = input.Length - 1 - i;
+                        foreach (var number in possibleNumbers)
+                        {
+                            var startIndex = endIndex - number.Length + 1;
+                            if (startIndex >= 0 && (startIndex + number.Length) <= input.Length)
+                                if (input.Substring(startIndex, number.Length).Equals(number))
+                                    return number;
+                        }
                     }
                 }
             }
